@@ -102,8 +102,10 @@ class MkdocsWithConfluence(BasePlugin):
         try:
             self.flen = len(pages)
             print(f"Number of Files in directory tree: {self.flen}")
-        except 0:
-            print("ERR: You have no documentation pages" "in the directory tree, please add at least one!")
+        # Fixed invalid exception clause: `except 0` is syntactically incorrect and doesn't catch real exceptions.
+except Exception:
+    print("ERR: You have no documentation pages in the directory tree, please add at least one!")
+
 
     def on_post_template(self, output_content, template_name, config):
         if self.config["verbose"] is False and self.config["debug"] is False:
@@ -163,9 +165,10 @@ class MkdocsWithConfluence(BasePlugin):
 
             if self.config["debug"]:
                 print(f"\nDEBUG    - Handling Page '{page.title}' (And Parent Nav Pages if necessary):\n")
-            if not all(self.config_scheme):
+            # Fixed incorrect config validation: previously checked schema, now checks actual config values for completeness.
+            if not all(self.config.values()):
                 print("DEBUG    - ERR: YOU HAVE EMPTY VALUES IN YOUR CONFIG. ABORTING")
-                return markdown
+                    return markdown
 
             try:
                 if self.config["debug"]:
